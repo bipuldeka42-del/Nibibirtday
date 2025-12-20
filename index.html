@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Nibedita ❤️</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:radial-gradient(circle,#200020,#000);
+    color:white;
+    text-align:center;
+    overflow-x:hidden;
+}
+#lockScreen{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+input{
+    padding:12px;
+    border-radius:25px;
+    border:none;
+    width:220px;
+    text-align:center;
+    font-size:16px;
+}
+button{
+    margin-top:15px;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:pink;
+    font-size:16px;
+    cursor:pointer;
+}
+#mainContent{display:none;}
+#photo{
+    width:90%;
+    max-width:360px;
+    border-radius:25px;
+    box-shadow:0 0 25px hotpink;
+}
+#message{
+    min-height:90px;
+    font-size:20px;
+    color:#ffb6c1;
+    margin-top:20px;
+}
+footer{margin:30px;color:#bbb;}
+.heart{
+    position:fixed;
+    bottom:-20px;
+    animation:float 6s linear infinite;
+}
+@keyframes float{
+    from{transform:translateY(0);opacity:1;}
+    to{transform:translateY(-110vh);opacity:0;}
+}
+canvas{position:fixed;top:0;left:0;pointer-events:none;}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lockScreen">
+    <h2>🔐 Enter the Password</h2>
+    <p>Only for Nibedita ❤️</p>
+    <input type="password" id="pwd" placeholder="Password">
+    <button onclick="unlock()">Unlock 💝</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent">
+<h1>🎉 Happy Birthday Nibedita ❤️</h1>
+
+<img id="photo" src="photos/1.jpg">
+<div id="message">Click Next 💝</div>
+<button onclick="nextSlide()">Next ❤️</button>
+
+<footer>Forever Yours — Samakash 💕</footer>
+</div>
+
+<!-- MUSIC -->
+<audio autoplay loop>
+    <source src="music/romantic.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="confetti"></canvas>
+
+<script>
+const PASSWORD="nibedita27";
+const photos=[...Array(10)].map((_,i)=>`photos/${i+1}.jpg`);
+const messages=[
+"🎉 Happy Birthday Nibedita ❤️",
+"Tumhari muskurahat meri duniya roshan karti hai ✨",
+"Har tasveer me tum aur bhi khoobsurat lagti ho 🌸",
+"Tum sirf meri GF nahi, meri dua ho 💕",
+"Tumhare bina kuch bhi adhoora lagta hai 🥺",
+"Shayari kam pad jaaye par mera pyaar nahi ✍️💖",
+"Har pal tumhare saath ek yaad ban jaata hai 🌙",
+"Agar zindagi dobara mile, phir bhi tumhi chahiye 💞",
+"Tum meri kahani ka sabse khoobsurat hissa ho 📖❤️",
+"❤️ Always Yours — Samakash ❤️"
+];
+
+let index=0,typing;
+
+function unlock(){
+    if(document.getElementById("pwd").value===PASSWORD){
+        lockScreen.style.display="none";
+        mainContent.style.display="block";
+    } else alert("Wrong password 💔");
+}
+
+function typeText(text){
+    clearInterval(typing);
+    let i=0;
+    message.innerHTML="";
+    typing=setInterval(()=>{
+        if(i<text.length) message.innerHTML+=text[i++];
+        else clearInterval(typing);
+    },45);
+}
+
+function nextSlide(){
+    if(index<photos.length){
+        photo.src=photos[index];
+        typeText(messages[index]);
+        index++;
+        if(index===photos.length) startConfetti();
+    } else showLetter();
+}
+
+/* HEARTS */
+setInterval(()=>{
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=15+Math.random()*20+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+},400);
+
+/* CONFETTI */
+function startConfetti(){
+    const c=document.getElementById("confetti");
+    const ctx=c.getContext("2d");
+    c.width=innerWidth; c.height=innerHeight;
+    let p=Array.from({length:150},()=>({
+        x:Math.random()*c.width,
+        y:Math.random()*c.height,
+        r:Math.random()*6+2
+    }));
+    setInterval(()=>{
+        ctx.clearRect(0,0,c.width,c.height);
+        p.forEach(o=>{
+            ctx.beginPath();
+            ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+            ctx.fillStyle="pink";
+            ctx.fill();
+            o.y+=2;
+            if(o.y>c.height)o.y=0;
+        });
+    },30);
+}
+
+/* FINAL LETTER */
+function showLetter(){
+document.body.innerHTML=`
+<h1>💌 For My Nibedita</h1>
+<p style="padding:20px;font-size:20px;color:#ffd1dc;">
+Nibedita,<br><br>
+Aaj tumhara birthday hai, par ye sirf tumhare janamdin ka celebration nahi hai,
+ye us din ka celebration hai jab meri zindagi me tum aayi 💖<br><br>
+
+Tumhari har muskurahat meri taqat hai,
+tumhari har khamoshi meri zimmedari,
+aur tumhara saath meri sabse badi khushi 🌙<br><br>
+
+Mujhe nahi pata future kya laayega,
+par itna zaroor pata hai —
+agar tum mere saath ho,
+toh har future khoobsurat hoga ❤️<br><br>
+
+Happy Birthday meri jaan 🎂<br>
+Forever yours,<br>
+<b>Samakash ❤️</b>
+</p>`;
+}
+</script>
+
+</body>
+</html>
